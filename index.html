@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SYSTEM // HUNTER PROTOCOL</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #04060f;
+    --bg2: #080c1a;
+    --bg3: #0c1225;
+    --panel: rgba(8,14,35,0.95);
+    --border: rgba(80,160,255,0.18);
+    --border-bright: rgba(80,160,255,0.5);
+    --blue: #50a0ff;
+    --blue-dim: #2a60b0;
+    --cyan: #00e5ff;
+    --gold: #ffd700;
+    --gold-dim: #b89800;
+    --red: #ff3860;
+    --green: #00ff9d;
+    --purple: #b060ff;
+    --text: #c8d8f0;
+    --text-dim: #6070a0;
+    --glow-blue: 0 0 12px rgba(80,160,255,0.6);
+    --glow-gold: 0 0 12px rgba(255,215,0,0.6);
+    --glow-cyan: 0 0 12px rgba(0,229,255,0.6);
+    --glow-green: 0 0 14px rgba(0,255,157,0.5);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content:'';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(80,160,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(80,160,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  body::after {
+    content:'';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(80,160,255,0.08) 0%, transparent 60%);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 12px 12px 60px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center;
+    padding: 22px 0 14px;
+    position: relative;
+  }
+  .system-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--cyan);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 6px;
+  }
+  .header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: var(--glow-blue), 0 0 40px rgba(80,160,255,0.3);
+    letter-spacing: 2px;
+    line-height: 1.2;
+  }
+  .header h1 span { color: var(--cyan); }
+  .header-sub {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 6px;
+    letter-spacing: 2px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+  .header-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), var(--blue), transparent);
+    margin-top: 14px;
+    box-shadow: 0 0 8px rgba(80,160,255,0.4);
+  }
+
+  /* ── PANEL ── */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    position: relative;
+  }
+  .panel::before {
+    content:'';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), transparent);
+  }
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px 8px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(80,160,255,0.05);
+  }
+  .panel-header .icon { font-size: 14px; }
+  .panel-header h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .panel-body { padding: 14px; }
+
+  /* ── HUNTER CARD ── */
+  .hunter-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+  .avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 6px;
+    border: 2px solid var(--blue);
+    box-shadow: var(--glow-blue), inset 0 0 15px rgba(80,160,255,0.2);
+    background: linear-gradient(135deg, #0a1530, #0d1f45);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar::after {
+    content:'';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 60%, rgba(80,160,255,0.15));
+  }
+  .hunter-info { flex: 1; }
+  .hunter-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+  .hunter-title {
+    font-size: 11px;
+    color: var(--cyan);
+    margin: 2px 0 6px;
+    letter-spacing: 1px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,215,0,0.1);
+    border: 1px solid var(--gold-dim);
+    border-radius: 3px;
+    padding: 2px 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    text-shadow: var(--glow-gold);
+  }
+
+  /* ── XP BAR ── */
+  .xp-section { margin-top: 4px; }
+  .xp-labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .xp-labels .current { color: var(--cyan); font-weight: bold; }
+  .bar-track {
+    height: 8px;
+    background: rgba(80,160,255,0.1);
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    transition: width 1.2s cubic-bezier(.4,0,.2,1);
+  }
+  .bar-fill::after {
+    content:'';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    animation: shimmer 2s infinite;
+  }
+  @keyframes shimmer { to { left: 200%; } }
+  .bar-xp { background: linear-gradient(90deg, var(--blue-dim), var(--cyan)); box-shadow: 0 0 8px rgba(0,229,255,0.4); }
+
+  /* ── STATS GRID ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .stat-card {
+    background: rgba(80,160,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 10px 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    border-radius: 5px 0 0 5px;
+  }
+  .stat-card.stamina::before { background: var(--cyan); }
+  .stat-card.strength::before { background: var(--red); }
+  .stat-card.control::before { background: var(--purple); }
+  .stat-card.discipline::before { background: var(--gold); }
+  .stat-card.recovery::before { background: var(--green); }
+  .stat-card.full { grid-column: 1 / -1; }
+
+  .stat-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .stat-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+  }
+  .stat-value span { font-size: 12px; color: var(--text-dim); }
+  .stat-bar-mini {
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .stat-bar-mini-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1.5s ease;
+  }
+  .stamina .stat-bar-mini-fill { background: var(--cyan); width: 25%; }
+  .strength .stat-bar-mini-fill { background: var(--red); width: 20%; }
+  .control .stat-bar-mini-fill { background: var(--purple); width: 15%; }
+  .discipline .stat-bar-mini-fill { background: var(--gold); width: 20%; }
+  .recovery .stat-bar-mini-fill { background: var(--green); width: 25%; }
+  .stat-icon { font-size: 16px; margin-bottom: 2px; }
+
+  /* ── SYSTEM MESSAGE ── */
+  .sys-msg {
+    background: rgba(0,229,255,0.05);
+    border: 1px solid rgba(0,229,255,0.2);
+    border-left: 3px solid var(--cyan);
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: var(--cyan);
+    line-height: 1.6;
+    animation: fadeInUp 0.5s ease;
+  }
+  .sys-msg.warning {
+    border-color: rgba(255,56,96,0.3);
+    border-left-color: var(--red);
+    color: var(--red);
+    background: rgba(255,56,96,0.05);
+  }
+  .sys-msg.gold {
+    border-color: rgba(255,215,0,0.3);
+    border-left-color: var(--gold);
+    color: var(--gold);
+    background: rgba(255,215,0,0.05);
+  }
+  .sys-msg .prefix { opacity: 0.6; font-size: 10px; display: block; margin-bottom: 3px; }
+
+  @keyframes fadeInUp {
+    from { opacity:0; transform: translateY(8px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+
+  /* ── QUEST LIST ── */
+  .quest-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(80,160,255,0.08);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .quest-item:last-child { border-bottom: none; }
+  .quest-item:active { background: rgba(80,160,255,0.05); }
+
+  .quest-check {
+    width: 22px; height: 22px;
+    border-radius: 4px;
+    border: 1.5px solid var(--blue-dim);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s;
+    font-size: 12px;
+    background: rgba(80,160,255,0.05);
+  }
+  .quest-item.done .quest-check {
+    background: var(--green);
+    border-color: var(--green);
+    box-shadow: var(--glow-green);
+  }
+  .quest-item.done .quest-name { text-decoration: line-through; color: var(--text-dim); }
+
+  .quest-info { flex: 1; min-width: 0; }
+  .quest-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .quest-sub {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 1px;
+  }
+
+  .quest-xp {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold);
+    flex-shrink: 0;
+    text-shadow: 0 0 8px rgba(255,215,0,0.4);
+  }
+  .quest-category {
+    font-size: 9px;
+    letter-spacing: 1px;
+    padding: 1px 5px;
+    border-radius: 2px;
+    font-family: 'Share Tech Mono', monospace;
+    flex-shrink: 0;
+  }
+  .cat-body { background: rgba(255,56,96,0.15); color: var(--red); border: 1px solid rgba(255,56,96,0.3); }
+  .cat-mind { background: rgba(176,96,255,0.15); color: var(--purple); border: 1px solid rgba(176,96,255,0.3); }
+  .cat-diet { background: rgba(0,255,157,0.15); color: var(--green); border: 1px solid rgba(0,255,157,0.3); }
+  .cat-discipline { background: rgba(255,215,0,0.12); color: var(--gold); border: 1px solid rgba(255,215,0,0.25); }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .tab {
+    flex: 1;
+    padding: 9px 4px;
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.25s;
+    border-right: 1px solid var(--border);
+  }
+  .tab:last-child { border-right: none; }
+  .tab.active {
+    background: rgba(80,160,255,0.15);
+    color: var(--cyan);
+    text-shadow: var(--glow-cyan);
+  }
+
+  /* ── LEVEL TABLE ── */
+  .level-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(80,160,255,0.06);
+    font-size: 13px;
+    position: relative;
+  }
+  .level-row:last-child { border-bottom: none; }
+  .level-row.current-level {
+    background: rgba(80,160,255,0.08);
+    border-radius: 4px;
+    padding: 8px 8px;
+    margin: 0 -14px;
+    border-left: 3px solid var(--cyan);
+  }
+  .level-row.current-level::after {
+    content: '◄ YOU';
+    position: absolute;
+    right: 14px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: var(--cyan);
+  }
+  .lvl-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dim);
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .current-level .lvl-num { color: var(--cyan); }
+  .lvl-rank {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    width: 36px;
+    text-align: center;
+    flex-shrink: 0;
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+  .rank-e { color: #888; background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); }
+  .rank-d { color: #4da8ff; background: rgba(77,168,255,0.1); border: 1px solid rgba(77,168,255,0.2); }
+  .rank-c { color: #00ff9d; background: rgba(0,255,157,0.1); border: 1px solid rgba(0,255,157,0.2); }
+  .rank-b { color: #b060ff; background: rgba(176,96,255,0.1); border: 1px solid rgba(176,96,255,0.2); }
+  .rank-a { color: #ffd700; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.25); }
+  .rank-s { color: #ff5555; background: rgba(255,85,85,0.12); border: 1px solid rgba(255,85,85,0.3); text-shadow: 0 0 8px rgba(255,85,85,0.5); }
+  .lvl-title { flex: 1; font-size: 12px; color: var(--text-dim); }
+  .current-level .lvl-title { color: var(--text); }
+  .lvl-xp {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+  .current-level .lvl-xp { color: var(--gold); }
+  .lvl-unlock { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
+
+  /* ── PENALTY ── */
+  .penalty-item {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,56,96,0.08);
+    align-items: flex-start;
+  }
+  .penalty-item:last-child { border-bottom: none; }
+  .penalty-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .penalty-title { font-size: 13px; font-weight: 600; color: var(--red); margin-bottom: 2px; }
+  .penalty-desc { font-size: 12px; color: var(--text-dim); line-height: 1.4; }
+
+  /* ── STREAK ── */
+  .streak-bar {
+    display: flex;
+    gap: 5px;
+    margin: 10px 0 4px;
+    flex-wrap: wrap;
+  }
+  .streak-day {
+    width: 28px; height: 28px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    background: rgba(80,160,255,0.03);
+  }
+  .streak-day.active {
+    background: rgba(255,215,0,0.15);
+    border-color: var(--gold-dim);
+    color: var(--gold);
+    box-shadow: 0 0 6px rgba(255,215,0,0.2);
+  }
+  .streak-day.today {
+    background: rgba(0,229,255,0.15);
+    border-color: var(--cyan);
+    color: var(--cyan);
+    box-shadow: var(--glow-cyan);
+    animation: pulse-cyan 2s infinite;
+  }
+  @keyframes pulse-cyan {
+    0%,100% { box-shadow: 0 0 6px rgba(0,229,255,0.3); }
+    50% { box-shadow: 0 0 14px rgba(0,229,255,0.7); }
+  }
+
+  /* ── DAILY LOG ── */
+  .log-entry {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(80,160,255,0.08);
+    align-items: flex-start;
+  }
+  .log-time {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .log-text { font-size: 13px; color: var(--text); line-height: 1.4; }
+  .log-xp { font-family: 'Orbitron', sans-serif; font-size: 11px; color: var(--gold); flex-shrink: 0; margin-left: auto; }
+
+  /* ── MOTIVATIONAL TICKER ── */
+  .ticker-wrap {
+    overflow: hidden;
+    border: 1px solid rgba(0,229,255,0.15);
+    border-radius: 4px;
+    background: rgba(0,229,255,0.04);
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-block;
+    animation: ticker 30s linear infinite;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+  }
+  @keyframes ticker {
+    from { transform: translateX(100vw); }
+    to { transform: translateX(-100%); }
+  }
+
+  /* ── WEEKLY SUMMARY ── */
+  .summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .summary-card {
+    background: rgba(80,160,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .summary-val {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .summary-lbl { font-size: 10px; color: var(--text-dim); letter-spacing: 1px; }
+
+  /* ── SECTION TABS VIEW ── */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeInUp 0.3s ease; }
+
+  /* ── FOOTER GLOW ── */
+  .footer-msg {
+    text-align: center;
+    padding: 16px 0;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+  }
+  .footer-msg span { color: var(--cyan); }
+
+  /* ── PROGRESS RING ── */
+  .progress-ring-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 14px 0 10px;
+  }
+  .ring-label {
+    text-align: center;
+    margin-top: -8px;
+  }
+  .ring-pct {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--cyan);
+    text-shadow: var(--glow-cyan);
+  }
+  .ring-sub { font-size: 11px; color: var(--text-dim); letter-spacing: 2px; margin-top: 2px; }
+
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 4px 0 10px;
+  }
+  .section-divider span {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    white-space: nowrap;
+  }
+  .section-divider::before, .section-divider::after {
+    content:'';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Flicker animation for titles */
+  @keyframes flicker {
+    0%,96%,100% { opacity:1; }
+    97% { opacity:0.6; }
+    98% { opacity:1; }
+    99% { opacity:0.7; }
+  }
+  .header h1 { animation: flicker 8s infinite; }
+
+  /* Quest total bar */
+  .daily-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: rgba(0,229,255,0.04);
+    border-bottom: 1px solid var(--border);
+  }
+  .daily-progress .dp-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  .daily-progress .dp-val {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cyan);
+    white-space: nowrap;
+    margin-left: auto;
+  }
+
+  .reward-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(80,160,255,0.07);
+  }
+  .reward-item:last-child { border-bottom: none; }
+  .reward-lvl {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold);
+    flex-shrink: 0;
+    width: 32px;
+    text-align: center;
+  }
+  .reward-text { font-size: 13px; color: var(--text); flex: 1; }
+  .reward-icon { font-size: 16px; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="system-tag">◈ SYSTEM INITIALIZED ◈</div>
+    <h1>HUNTER<br><span>PROTOCOL</span></h1>
+    <div class="header-sub">SELF-IMPROVEMENT SYSTEM v1.0</div>
+    <div class="header-line"></div>
+  </div>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <span class="ticker-inner">⚡ SYSTEM ONLINE — You have been chosen. Rise, Hunter. ◈ Daily quests refreshed. ◈ Discipline is your greatest weapon. ◈ Every rep. Every meal. Every choice. It counts. ◈ The system is watching your growth. ◈ </span>
+  </div>
+
+  <!-- SYSTEM BOOT MESSAGE -->
+  <div class="sys-msg">
+    <span class="prefix">[ SYSTEM MESSAGE — APR 19, 2026 ]</span>
+    Hunter detected. Beginning 13-day ascension protocol.<br>
+    Objective: Reach <strong>RANK B</strong> by May 1, 2026.<br>
+    Your journey starts <strong>NOW.</strong>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('dashboard')">STATUS</div>
+    <div class="tab" onclick="showTab('quests')">QUESTS</div>
+    <div class="tab" onclick="showTab('levels')">LEVELS</div>
+    <div class="tab" onclick="showTab('log')">LOG</div>
+  </div>
+
+  <!-- TAB: DASHBOARD -->
+  <div class="tab-content active" id="tab-dashboard">
+
+    <!-- Hunter Profile -->
+    <div class="panel">
+      <div class="panel-header"><span class="icon">⚔</span><h2>Hunter Profile</h2></div>
+      <div class="panel-body">
+        <div class="hunter-card">
+          <div class="avatar">🧬</div>
+          <div class="hunter-info">
+            <div class="hunter-name">USMAN</div>
+            <div class="hunter-title">// AWAKENED HUNTER</div>
+            <div class="rank-badge">⬛ RANK E → TARGET: B</div>
+          </div>
+        </div>
+
+        <div class="section-divider"><span>LEVEL PROGRESS</span></div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <div>
+            <span style="font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;color:#fff;">LV <span style="color:var(--cyan)">1</span></span>
+            <span style="font-size:12px;color:var(--text-dim);margin-left:6px;">→ LV 2</span>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim)">RANK</div>
+            <div class="lvl-rank rank-e" style="font-size:15px;padding:3px 8px;">E</div>
+          </div>
+        </div>
+
+        <div class="xp-section">
+          <div class="xp-labels">
+            <span>XP</span>
+            <span class="current">0 / 500 XP</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill bar-xp" style="width:0%"></div></div>
+        </div>
+
+        <div style="margin-top:10px;padding:8px 10px;background:rgba(255,215,0,0.06);border:1px solid rgba(255,215,0,0.15);border-radius:4px;display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim);">🔥 CURRENT STREAK</span>
+          <span style="font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;color:var(--gold);">0 DAYS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Streak Calendar -->
+    <div class="panel">
+      <div class="panel-header"><span class="icon">📅</span><h2>13-Day Ascension Timeline</h2></div>
+      <div class="panel-body">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--text-dim);margin-bottom:8px;letter-spacing:1px;">APR 19 → MAY 1 • DAYS REMAINING: 13</div>
+        <div class="streak-bar">
+          <div class="streak-day today">19</div>
+          <div class="streak-day">20</div>
+          <div class="streak-day">21</div>
+          <div class="streak-day">22</div>
+          <div class="streak-day">23</div>
+          <div class="streak-day">24</div>
+          <div class="streak-day">25</div>
+          <div class="streak-day">26</div>
+          <div class="streak-day">27</div>
+          <div class="streak-day">28</div>
+          <div class="streak-day">29</div>
+          <div class="streak-day">30</div>
+          <div class="streak-day">1</div>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:6px;font-family:'Share Tech Mono',monospace;">Complete all 13 days for MAX RANK BONUS +500 XP</div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="panel">
+      <div class="panel-header"><span class="icon">📊</span><h2>Hunter Stats</h2></div>
+      <div class="panel-body">
+        <div class="sys-msg" style="margin-bottom:12px;font-size:11px;">
+          <span class="prefix">[ STARTING STATS — BASELINE RECORDED ]</span>
+          All stats initialized at base level. Increase through daily quest completion.
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card stamina">
+            <div class="stat-icon">💨</div>
+            <div class="stat-label">Stamina</div>
+            <div class="stat-value">12<span>/100</span></div>
+            <div class="stat-bar-mini"><div class="stat-bar-mini-fill"></div></div>
+          </div>
+          <div class="stat-card strength">
+            <div class="stat-icon">💪</div>
+            <div class="stat-label">Strength</div>
+            <div class="stat-value">10<span>/100</span></div>
+            <div class="stat-bar-mini"><div class="stat-bar-mini-fill"></div></div>
+          </div>
+          <div class="stat-card control">
+            <div class="stat-icon">🧠</div>
+            <div class="stat-label">Control</div>
+            <div class="stat-value">8<span>/100</span></div>
+            <div class="stat-bar-mini"><div class="stat-bar-mini-fill"></div></div>
+          </div>
+          <div class="stat-card discipline">
+            <div class="stat-icon">⚔</div>
+            <div class="stat-label">Discipline</div>
+            <div class="stat-value">10<span>/100</span></div>
+            <div class="stat-bar-mini"><div class="stat-bar-mini-fill"></div></div>
+          </div>
+          <div class="stat-card recovery full">
+            <div class="stat-icon">🌿</div>
+            <div class="stat-label">Recovery</div>
+            <div class="stat-value">13<span>/100</span></div>
+            <div class="stat-bar-mini"><div class="stat-bar-mini-fill"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Motivational -->
+    <div class="sys-msg gold">
+      <span class="prefix">[ SYSTEM NOTIFICATION ]</span>
+      "The gap between who you are and who you want to be is closed one quest at a time. Begin."
+    </div>
+  </div>
+
+  <!-- TAB: QUESTS -->
+  <div class="tab-content" id="tab-quests">
+
+    <div class="panel">
+      <div class="panel-header"><span class="icon">📋</span><h2>Daily Quest Board</h2></div>
+      <div class="daily-progress">
+        <span class="dp-label">TODAY'S PROGRESS</span>
+        <div style="flex:1;margin:0 10px;"><div class="bar-track"><div class="bar-fill bar-xp" id="quest-progress-bar" style="width:0%"></div></div></div>
+        <span class="dp-val" id="quest-count">0/10</span>
+      </div>
+      <div class="panel-body" id="quest-list">
+        <!-- Quests injected by JS -->
+      </div>
+    </div>
+
+    <div class="sys-msg">
+      <span class="prefix">[ XP SYSTEM ]</span>
+      Max daily XP: <strong>+550 XP</strong><br>
+      Streak Bonus (7+ days): <strong>+50 XP/day</strong><br>
+      Full Day Bonus: <strong>+30 XP</strong> if ALL 10 quests complete
+    </div>
+
+    <div class="panel">
+      <div class="panel-header"><span class="icon">🏆</span><h2>Level Rewards Unlock</h2></div>
+      <div class="panel-body">
+        <div class="reward-item"><span class="reward-lvl">LV 2</span><span class="reward-text">Energy surge — less fatigue, sharper focus</span><span class="reward-icon">⚡</span></div>
+        <div class="reward-item"><span class="reward-lvl">LV 3</span><span class="reward-text">Discipline trait unlocked — resistance to urges</span><span class="reward-icon">🛡</span></div>
+        <div class="reward-item"><span class="reward-lvl">LV 4</span><span class="reward-text">Strength +10 — visible physical improvement</span><span class="reward-icon">💪</span></div>
+        <div class="reward-item"><span class="reward-lvl">LV 5</span><span class="reward-text">Mental Fortress — confidence noticeably higher</span><span class="reward-icon">🧠</span></div>
+        <div class="reward-item"><span class="reward-lvl">LV 6</span><span class="reward-text">Stamina Overdrive — workouts become easier</span><span class="reward-icon">💨</span></div>
+        <div class="reward-item"><span class="reward-lvl">LV 7</span><span class="reward-text">Control mastered — deeper mind-body link</span><span class="reward-icon">🎯</span></div>
+        <div class="reward-item"><span class="reward-lvl">LV 8</span><span class="reward-text">Recovery Boost — sleep quality peaks</span><span class="reward-icon">🌿</span></div>
+        <div class="reward-item"><span class="reward-lvl">LV 9</span><span class="reward-text">Aura of Discipline — others notice your change</span><span class="reward-icon">✨</span></div>
+        <div class="reward-item"><span class="reward-lvl">LV 10</span><span class="reward-text">RANK S ASCENSION — Full Hunter Awakening</span><span class="reward-icon">🔥</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: LEVELS -->
+  <div class="tab-content" id="tab-levels">
+
+    <div class="panel">
+      <div class="panel-header"><span class="icon">📈</span><h2>Level Progression Table</h2></div>
+      <div class="panel-body">
+
+        <div class="level-row">
+          <div class="lvl-num">1</div>
+          <div class="lvl-rank rank-e">E</div>
+          <div><div class="lvl-title">Awakened Novice</div><div class="lvl-unlock">Starting point. Build habits.</div></div>
+          <div class="lvl-xp">0 XP</div>
+        </div>
+        <div class="level-row current-level">
+          <div class="lvl-num" style="color:var(--cyan)">1</div>
+          <div class="lvl-rank rank-e">E</div>
+          <div><div class="lvl-title" style="color:var(--text)">Awakened Novice</div><div class="lvl-unlock" style="color:var(--cyan)">▸ You are here. Start NOW.</div></div>
+          <div class="lvl-xp">0 XP</div>
+        </div>
+        <div class="level-row">
+          <div class="lvl-num">2</div>
+          <div class="lvl-rank rank-e">E</div>
+          <div><div class="lvl-title">Iron Will Initiate</div><div class="lvl-unlock">Energy improves</div></div>
+          <div class="lvl-xp">500</div>
+        </div>
+        <div class="level-row">
+          <div class="lvl-num">3</div>
+          <div class="lvl-rank rank-d">D</div>
+          <div><div class="lvl-title">Disciplined Scout</div><div class="lvl-unlock">Urge resistance unlocked</div></div>
+          <div class="lvl-xp">1,100</div>
+        </div>
+        <div class="level-row">
+          <div class="lvl-num">4</div>
+          <div class="lvl-rank rank-d">D</div>
+          <div><div class="lvl-title">Body Forged Warrior</div><div class="lvl-unlock">Strength +10 bonus</div></div>
+          <div class="lvl-xp">1,800</div>
+        </div>
+        <div class="level-row">
+          <div class="lvl-num">5</div>
+          <div class="lvl-rank rank-c">C</div>
+          <div><div class="lvl-title">Mental Fortress</div><div class="lvl-unlock">Confidence peaks</div></div>
+          <div class="lvl-xp">2,600</div>
+        </div>
+        <div class="level-row">
+          <div class="lvl-num">6</div>
+          <div class="lvl-rank rank-c">C</div>
+          <div><div class="lvl-title">Stamina Overdrive</div><div class="lvl-unlock">Workouts unlock harder mode</div></div>
+          <div class="lvl-xp">3,500</div>
+        </div>
+        <div class="level-row">
+          <div class="lvl-num">7</div>
+          <div class="lvl-rank rank-b">B</div>
+          <div><div class="lvl-title">Control Adept</div><div class="lvl-unlock">Deep mind-body link</div></div>
+          <div class="lvl-xp">4,500</div>
+        </div>
+        <div class="level-row">
+          <div class="lvl-num">8</div>
+          <div class="lvl-rank rank-b">B</div>
+          <div><div class="lvl-title">Recovered Titan</div><div class="lvl-unlock">Sleep quality peaks</div></div>
+          <div class="lvl-xp">5,600</div>
+        </div>
+        <div class="level-row">
+          <div class="lvl-num">9</div>
+          <div class="lvl-rank rank-a">A</div>
+          <div><div class="lvl-title">Aura Awakened</div><div class="lvl-unlock">Others notice your shift</div></div>
+          <div class="lvl-xp">6,800</div>
+        </div>
+        <div class="level-row">
+          <div class="lvl-num">10</div>
+          <div class="lvl-rank rank-s">S</div>
+          <div><div class="lvl-title">SHADOW MONARCH</div><div class="lvl-unlock">Full Hunter Awakening</div></div>
+          <div class="lvl-xp">8,000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Penalty Panel -->
+    <div class="panel">
+      <div class="panel-header"><span class="icon">⚠</span><h2>Penalty System</h2></div>
+      <div class="panel-body">
+        <div class="sys-msg warning" style="margin-bottom:12px;">
+          <span class="prefix">[ SYSTEM WARNING — READ CAREFULLY ]</span>
+          Failure is tracked. The System does not forget.
+        </div>
+        <div class="penalty-item">
+          <div class="penalty-icon">💀</div>
+          <div>
+            <div class="penalty-title">MISSED QUEST</div>
+            <div class="penalty-desc">-15 XP per missed quest. Streak reset to 0 if 3+ missed in one day.</div>
+          </div>
+        </div>
+        <div class="penalty-item">
+          <div class="penalty-icon">🍔</div>
+          <div>
+            <div class="penalty-title">JUNK FOOD CONSUMED</div>
+            <div class="penalty-desc">-25 XP. Discipline stat -1. System Warning issued.</div>
+          </div>
+        </div>
+        <div class="penalty-item">
+          <div class="penalty-icon">🔞</div>
+          <div>
+            <div class="penalty-title">PORN VIEWED</div>
+            <div class="penalty-desc">-50 XP. Control stat -2. Streak BROKEN. System Alert Level: HIGH.</div>
+          </div>
+        </div>
+        <div class="penalty-item">
+          <div class="penalty-icon">😴</div>
+          <div>
+            <div class="penalty-title">SLEEP &lt; 7 HOURS</div>
+            <div class="penalty-desc">-20 XP. Recovery stat -1. All physical quests worth 50% XP next day.</div>
+          </div>
+        </div>
+        <div class="penalty-item">
+          <div class="penalty-icon">🚨</div>
+          <div>
+            <div class="penalty-title">SYSTEM WARNING STATE</div>
+            <div class="penalty-desc">3 bad days in a row = "DANGER ZONE". XP gain halved until 2 clean days completed.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- May 1 Goal -->
+    <div class="sys-msg gold">
+      <span class="prefix">[ FINAL OBJECTIVE — MAY 1, 2026 ]</span>
+      Target: <strong>RANK B / Level 7+</strong><br>
+      Stamina: 60+ | Discipline: 65+ | Control: 55+<br>
+      Perfect streak bonus: <strong>+500 XP</strong><br>
+      <br>
+      "You will not be the same person on May 1.<br>The System guarantees it."
+    </div>
+  </div>
+
+  <!-- TAB: LOG -->
+  <div class="tab-content" id="tab-log">
+
+    <div class="panel">
+      <div class="panel-header"><span class="icon">📓</span><h2>Example Daily Log — Day 1</h2></div>
+      <div class="panel-body">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);margin-bottom:10px;letter-spacing:1px;">APR 19, 2026 // DAY 1 OF 13</div>
+
+        <div class="log-entry">
+          <div class="log-time">06:30</div>
+          <div class="log-text">☀️ Woke up. Sunlight exposure — went outside for 10 min</div>
+          <div class="log-xp">+30</div>
+        </div>
+        <div class="log-entry">
+          <div class="log-time">07:00</div>
+          <div class="log-text">🥚 Ate eggs, banana, peanuts — healthy breakfast</div>
+          <div class="log-xp">+40</div>
+        </div>
+        <div class="log-entry">
+          <div class="log-time">07:15</div>
+          <div class="log-text">🧄 Took 1-2 cloves raw garlic with water</div>
+          <div class="log-xp">+20</div>
+        </div>
+        <div class="log-entry">
+          <div class="log-time">07:20</div>
+          <div class="log-text">💧 Drank full glass of detox water (lemon + cucumber)</div>
+          <div class="log-xp">+25</div>
+        </div>
+        <div class="log-entry">
+          <div class="log-time">08:30</div>
+          <div class="log-text">🏋️ Workout — 50 squats, 30 push-ups, 3 sets</div>
+          <div class="log-xp">+80</div>
+        </div>
+        <div class="log-entry">
+          <div class="log-time">09:00</div>
+          <div class="log-text">🚿 Post-workout hygiene shower completed</div>
+          <div class="log-xp">+20</div>
+        </div>
+        <div class="log-entry">
+          <div class="log-time">09:30</div>
+          <div class="log-text">🧘 Kegel exercises — 3 sets of 15 reps</div>
+          <div class="log-xp">+50</div>
+        </div>
+        <div class="log-entry">
+          <div class="log-time">14:00</div>
+          <div class="log-text">🍽 Proper healthy lunch — no junk food</div>
+          <div class="log-xp">+30</div>
+        </div>
+        <div class="log-entry">
+          <div class="log-time">All Day</div>
+          <div class="log-text">🚫 Avoided junk food completely</div>
+          <div class="log-xp">+40</div>
+        </div>
+        <div class="log-entry">
+          <div class="log-time">All Day</div>
+          <div class="log-text">🚫 No porn — Control maintained</div>
+          <div class="log-xp">+60</div>
+        </div>
+        <div class="log-entry" style="border:none">
+          <div class="log-time">23:00</div>
+          <div class="log-text">😴 Slept 8 hours — Recovery maxed</div>
+          <div class="log-xp">+60</div>
+        </div>
+
+        <div style="height:1px;background:var(--border);margin:10px 0;"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;">
+          <span style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text-dim);">FULL DAY BONUS</span>
+          <span style="font-family:'Orbitron',sans-serif;font-size:13px;color:var(--gold);">+30 XP</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;">
+          <span style="font-family:'Orbitron',sans-serif;font-size:13px;color:#fff;">TOTAL DAY 1 XP</span>
+          <span style="font-family:'Orbitron',sans-serif;font-size:18px;color:var(--cyan);text-shadow:var(--glow-cyan);">485 XP</span>
+        </div>
+      </div>
+    </div>
+
+    -- System messages -->
+    <div class="panel">
+      <div class="panel-header"><span class="icon">💬</span><h2>System Notifications</h2></div>
+      <div class="panel-body" style="display:flex;flex-direction:column;gap:8px;">
+        <div class="sys-msg" style="margin:0;">
+          <span class="prefix">[ QUEST COMPLETE ]</span>
+          Daily workout logged. <strong>Strength +1. Stamina +1.</strong>
+        </div>
+        <div class="sys-msg gold" style="margin:0;">
+          <span class="prefix">[ DISCIPLINE STAT INCREASED ]</span>
+          You resisted temptation. <strong>Control +1. Discipline +1.</strong>
+        </div>
+        <div class="sys-msg" style="margin:0;">
+          <span class="prefix">[ RECOVERY OPTIMIZED ]</span>
+          Sleep target met. <strong>Recovery +1. Tomorrow's XP rate: 100%.</strong>
+        </div>
+        <div class="sys-msg gold" style="margin:0;">
+          <span class="prefix">[ SYSTEM EVALUATION ]</span>
+          "You are getting stronger. Each completed quest is proof. The weak you is gone. Keep climbing."
+        </div>
+        <div class="sys-msg warning" style="margin:0;">
+          <span class="prefix">[ SYSTEM REMINDER ]</span>
+          3 days missed = DANGER ZONE. Do not let the system down. <strong>You owe it to yourself.</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Summary -->
+    <div class="panel">
+      <div class="panel-header"><span class="icon">📊</span><h2>Weekly Evaluation Format</h2></div>
+      <div class="panel-body">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--cyan);margin-bottom:12px;">[ WEEK 1 SUMMARY — EXAMPLE ]</div>
+        <div class="summary-grid" style="margin-bottom:12px;">
+          <div class="summary-card">
+            <div class="summary-val" style="color:var(--gold)">7/7</div>
+            <div class="summary-lbl">DAYS ACTIVE</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-val" style="color:var(--cyan)">3,290</div>
+            <div class="summary-lbl">XP EARNED</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-val" style="color:var(--green)">94%</div>
+            <div class="summary-lbl">QUEST RATE</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text-dim)">Stamina</span><span style="color:var(--cyan);font-family:'Share Tech Mono',monospace;">12 → 35 (+23)</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text-dim)">Strength</span><span style="color:var(--red);font-family:'Share Tech Mono',monospace;">10 → 28 (+18)</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text-dim)">Control</span><span style="color:var(--purple);font-family:'Share Tech Mono',monospace;">8 → 24 (+16)</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text-dim)">Discipline</span><span style="color:var(--gold);font-family:'Share Tech Mono',monospace;">10 → 30 (+20)</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;"><span style="color:var(--text-dim)">Recovery</span><span style="color:var(--green);font-family:'Share Tech Mono',monospace;">13 → 31 (+18)</span></div>
+        </div>
+        <div class="sys-msg gold" style="margin-top:12px;margin-bottom:0;">
+          <span class="prefix">[ WEEK 1 EVALUATION ]</span>
+          Rank upgraded: <strong>E → D</strong><br>
+          "Outstanding progress. You are no longer a novice. The path to B-Rank is within reach."
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-msg">◈ <span>SYSTEM ACTIVE</span> • APR 19 → MAY 1 ◈<br>RISE, HUNTER.</div>
+
+</div>
+
+  <script>
+  const quests = [
+    { id:1, name:"Eat Healthy Meal", sub:"Eggs · Banana · Peanuts · Proper meals", xp:40, cat:"diet", icon:"🥚", stat:"Recovery +1" },
+    { id:2, name:"Take Garlic", sub:"1–2 raw cloves with water", xp:20, cat:"diet", icon:"🧄", stat:"Stamina +0.5" },
+    { id:3, name:"Drink Detox Water", sub:"Lemon / cucumber infused water", xp:25, cat:"diet", icon:"💧", stat:"Recovery +0.5" },
+    { id:4, name:"Workout", sub:"Squats × 50 + Push-ups × 30, 3 sets", xp:80, cat:"body", icon:"🏋️", stat:"Strength +2, Stamina +1" },
+    { id:5, name:"Kegel Exercises", sub:"3 sets × 15 reps, focused breathing", xp:50, cat:"body", icon:"🧘", stat:"Control +2" },
+    { id:6, name:"Sunlight Exposure", sub:"10–15 min outdoors, no shade", xp:30, cat:"body", icon:"☀️", stat:"Stamina +1" },
+    { id:7, name:"Post-Workout Hygiene", sub:"Cold/warm shower after training", xp:20, cat:"body", icon:"🚿", stat:"Recovery +0.5" },
+    { id:8, name:"Avoid Junk Food", sub:"Zero processed / fast food all day", xp:40, cat:"discipline", icon:"🚫🍔", stat:"Discipline +1" },
+    { id:9, name:"Avoid Porn", sub:"No viewing. Control is power.", xp:60, cat:"discipline", icon:"🚫🔞", stat:"Control +1, Discipline +1" },
+    { id:10, name:"Sleep 7+ Hours", sub:"In bed on time. No exceptions.", xp:60, cat:"mind", icon:"😴", stat:"Recovery +2" },
+  ];
+
+  const catClass = { diet:'cat-diet', body:'cat-body', discipline:'cat-discipline', mind:'cat-mind' };
+  const catLabel = { diet:'DIET', body:'BODY', discipline:'WILL', mind:'MIND' };
+
+  let done = new Set();
+
+  function renderQuests() {
+    const el = document.getElementById('quest-list');
+    el.innerHTML = quests.map(q => `
+      <div class="quest-item ${done.has(q.id)?'done':''}" onclick="toggleQuest(${q.id})">
+        <div class="quest-check">${done.has(q.id)?'✓':''}</div>
+        <div class="quest-info">
+          <div class="quest-name">${q.icon} ${q.name}</div>
+          <div class="quest-sub">${q.sub}</div>
+          ${done.has(q.id)?`<div class="quest-sub" style="color:var(--green);margin-top:2px;">▲ ${q.stat}</div>`:''}
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;">
+          <div class="quest-xp">+${q.xp}</div>
+          <div class="quest-category ${catClass[q.cat]}">${catLabel[q.cat]}</div>
+        </div>
+      </div>
+    `).join('');
+    updateProgress();
+  }
+
+  function toggleQuest(id) {
+    if(done.has(id)) done.delete(id); else done.add(id);
+    renderQuests();
+    if(done.size === quests.length) showCompletionMsg();
+  }
+
+  function updateProgress() {
+    const pct = (done.size / quests.length) * 100;
+    document.getElementById('quest-progress-bar').style.width = pct + '%';
+    document.getElementById('quest-count').textContent = done.size + '/' + quests.length;
+  }
+
+  function showCompletionMsg() {
+    const msg = document.createElement('div');
+    msg.className = 'sys-msg gold';
+    msg.innerHTML = '<span class="prefix">[ ALL QUESTS COMPLETE — FULL DAY BONUS ACTIVATED ]</span>+30 BONUS XP AWARDED.<br>"You did not break. You are stronger than yesterday.<br>Discipline increased. The System is proud."';
+    document.getElementById('tab-quests').insertBefore(msg, document.getElementById('tab-quests').firstChild);
+    setTimeout(()=>msg.remove(), 6000);
+  }
+
+  function showTab(id) {
+    document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.getElementById('tab-'+id).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  renderQuests();
+</script>
+</body>
+</html>
